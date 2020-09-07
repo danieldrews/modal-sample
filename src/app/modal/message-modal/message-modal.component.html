@@ -1,0 +1,14 @@
+<div class="modal__header">
+  <span class="modal__title">{{ modal.title }}</span>
+  <button class="modal__close" (click)="close()">
+    <span>&times;</span>
+  </button>
+</div>
+<div class="modal__body">{{ modal.message }}</div>
+<div class="modal__footer">
+  <div *ngFor="let button of modal.buttons">
+    <button 
+      type="button" 
+      [class]="button.class" (click)="btnClick(button.id)">{{ button.text }}</button>
+  </div>
+</div>

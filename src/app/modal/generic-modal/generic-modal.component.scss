@@ -1,0 +1,51 @@
+$backdrop-opacity: .5;
+$z-index: 10;
+$dialog-margin-top: 10vh;
+$dialog-max-width: 500px;
+
+%overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal {
+  @extend %overlay;
+  z-index: $z-index + 1;
+  pointer-events: none;
+  
+  &__dialog {  
+    position: relative;
+    width: auto;
+    margin: $dialog-margin-top .5rem;
+    pointer-events: none;
+  }
+
+  &__content {
+    position: relative;
+    width: auto;
+    background-color: #FFF;
+    border: 1px solid #D3D3D3;
+    border-radius: 3px;
+    outline: 0;
+    pointer-events: auto;
+  }
+  
+}
+
+.overlay__backdrop {
+  @extend %overlay;
+  z-index: $z-index;
+  background-color: #000;
+  opacity: $backdrop-opacity;
+}
+
+@media (min-width: 576px) {
+  .modal__dialog {
+    max-width: $dialog-max-width;
+    margin: $dialog-margin-top auto;
+  }
+
+}

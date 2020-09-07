@@ -1,0 +1,75 @@
+<h1>Modal Service Sample</h1>
+
+<section>
+  <h2>Component</h2>
+  <span>MessageModalComponent data:</span>
+  <pre style="white-space: pre-wrap;">{{ componentModalData | json }}</pre>
+  <button (click)="openComponentModal(componentModalData)">Open component modal</button>
+  <ul>
+    <li *ngFor="let action of componentModalActions">{{action}}</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Template</h2>
+  <code>
+    &lt;ng-template #sampleTemplate&gt;<br />
+    Look this awesome template... kind of nice isn't it?<br />
+    Do your magic and add some styles :p<br />
+    &lt;/ng-template&gt;
+  </code>
+  <br>
+  <br>
+  <button (click)="openTemplate(sampleTemplate)">Open With Template</button>
+
+  <ng-template #sampleTemplate>
+    Look this awesome template... kind of nice isn't it?<br>
+    Do your magic and add some styles :p
+  </ng-template>
+</section>
+
+<section>
+  <h2>Nested</h2>
+  <span>Uses ModalRef returned from open function to manually close modals</span>
+  <br>
+  <br>
+  <code>
+      &lt;ng-template #sampleFirstModal&gt;<br />
+      I'm the Parent Modal &lt;br&gt;<br />
+      &lt;button (click)=&quot;openNestedChild(sampleSecondModal)&quot;&gt;Open child Modal&lt;/button&gt;<br />
+    &lt;/ng-template&gt;<br />
+    <br />
+    &lt;ng-template #sampleSecondModal&gt;<br />
+      I`m the Child Modal &lt;br&gt;<br />
+      Whould you like to &lt;br&gt;<br />
+      &lt;button (click)=&quot;nestedParentRef.close()&quot;&gt;Close Parent&lt;/button&gt;<br />
+      &lt;button (click)=&quot;nestedChildRef.close()&quot;&gt;Close Itself&lt;/button&gt;<br />
+    &lt;/ng-template&gt;
+  </code>
+  <br>
+  <br>
+  <button (click)="openNestedSample(sampleFirstModal)">Open Nested</button>
+
+  <ng-template #sampleFirstModal>
+    I'm the Parent Modal <br>
+    <button (click)="openNestedChild(sampleSecondModal)">Open child Modal</button>
+  </ng-template>
+
+  <ng-template #sampleSecondModal>
+    I`m the Child Modal <br>
+    <button (click)="nestedParentRef.close()">Close Parent</button>
+    <button (click)="nestedChildRef.close()">Close Itself</button>
+  </ng-template>
+
+</section>
+
+<section>
+  <h2>Scrollable **not working**</h2>
+  <button (click)="openTemplate(scrollableTemplate)">Open big modal</button>
+
+  <ng-template #scrollableTemplate>
+    <div style="height: 1000px;">
+      Should disable parent scroll and enable internal scroll
+    </div>
+  </ng-template>
+</section>
