@@ -14,7 +14,13 @@ $dialog-max-width: 500px;
 .modal {
   @extend %overlay;
   z-index: $z-index + 1;
-  pointer-events: none;
+
+  //removing pointer-events enable scroll but we lose backdrop click to dismiss.
+  //pointer-events: none !important;
+
+  display: flex;
+  justify-content: center;
+  overflow: auto;
   
   &__dialog {  
     position: relative;
@@ -45,7 +51,9 @@ $dialog-max-width: 500px;
 @media (min-width: 576px) {
   .modal__dialog {
     max-width: $dialog-max-width;
-    margin: $dialog-margin-top auto;
   }
+}
 
+body.modalOpen {
+  overflow: hidden;
 }

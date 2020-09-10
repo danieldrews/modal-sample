@@ -1,5 +1,5 @@
 import { Injectable, Injector, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef, OverlayContainer } from '@angular/cdk/overlay';
 import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ModalInjectionToken } from './injection-token/modal-injection-token';
 import { GenericModalComponent } from './generic-modal/generic-modal.component';
@@ -46,6 +46,7 @@ export class ModalService {
     return this.overlay.create({
       hasBackdrop: true,
       backdropClass: 'overlay__backdrop',
+      panelClass: 'modal',
       disposeOnNavigation: true
     });
   }

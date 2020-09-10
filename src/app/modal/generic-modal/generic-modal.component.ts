@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, ViewEncapsulation, HostBinding } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, ViewEncapsulation, HostBinding, HostListener } from '@angular/core';
 import { CdkPortalOutlet, PortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 
 @Component({
@@ -9,7 +9,7 @@ import { CdkPortalOutlet, PortalOutlet, ComponentPortal, TemplatePortal } from '
 })
 export class GenericModalComponent implements AfterViewInit {
 
-  @HostBinding('class') class = 'modal';
+  //@HostBinding('class') class = 'modal';
 
   @ViewChild(CdkPortalOutlet, {static: false}) portalOutlet: PortalOutlet;
 
@@ -21,5 +21,4 @@ export class GenericModalComponent implements AfterViewInit {
     const componentRef = this.portalOutlet.attach(this.portal);
     componentRef.changeDetectorRef?.detectChanges();
   }
-
 }
