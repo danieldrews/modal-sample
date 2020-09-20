@@ -1,24 +1,22 @@
-import { Component, ViewChild, AfterViewInit, ViewEncapsulation, HostBinding, HostListener } from '@angular/core';
-import { CdkPortalOutlet, PortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
+import { Component, ViewChild, AfterViewInit, ViewEncapsulation, Inject, ChangeDetectorRef } from '@angular/core';
+import { CdkPortalOutlet, PortalOutlet, Portal } from '@angular/cdk/portal';
+import { CUSTOM_PORTAL } from '../injection-token/modal-injection-token';
 
 @Component({
-  selector: 'app-generic-modal',
-  templateUrl: './generic-modal.component.html',
+  template: `<div class="modal__dialog"><ng-container *cdkPortalOutlet></ng-container></div>`,
   styleUrls: ['./generic-modal.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class GenericModalComponent implements AfterViewInit {
 
-  //@HostBinding('class') class = 'modal';
-
   @ViewChild(CdkPortalOutlet, {static: false}) portalOutlet: PortalOutlet;
 
-  portal: ComponentPortal<any> | TemplatePortal;
-
-  constructor() { }
+  constructor(
+    @Inject(CUSTOM_PORTAL) private portal: Portal<any>,
+    private cdr: ChangeDetectorRef) { }
 
   ngAfterViewInit(): void {
-    const componentRef = this.portalOutlet.attach(this.portal);
-    componentRef.changeDetectorRef?.detectChanges();
+    this.portalOutlet.attach(this.portal);
+    this.cdr.detectChanges();
   }
 }

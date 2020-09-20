@@ -1,53 +1,46 @@
-import { Injectable, Injector, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Overlay, OverlayRef, OverlayContainer } from '@angular/cdk/overlay';
-import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
+import { Injectable, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal, Portal, TemplatePortal } from '@angular/cdk/portal';
 import { ModalInjectionToken } from './injection-token/modal-injection-token';
 import { GenericModalComponent } from './generic-modal/generic-modal.component';
-import { ModalRef } from './modal-ref';
+import { GenericModalRef } from './generic-modal-ref';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModalService {
 
-  constructor(
-    private injector: Injector,
-    private overlay: Overlay) { }
+  constructor(private overlay: Overlay) { }
 
-  public openComponent<T = any>(component: any, injectionData?: T): ModalRef<T> {
-    const overlayRef = this.createOverlay();
-    const modalRef = new ModalRef<T>(overlayRef, injectionData);
-    const componentPortal = this.buildComponentPortal(component, modalRef);
-    this.buildModalPortal(overlayRef, componentPortal);
-    return modalRef;
+  openComponent = <T = any>(component: any, injectionData?: T): GenericModalRef<T> => 
+    this._open(_ => this._getComponentPortal(component, _), injectionData);
+
+  openTemplate = (templateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef): GenericModalRef => 
+    this._open(_ => new TemplatePortal<any>(templateRef, viewContainerRef));
+
+  _open<T = any>(generateCdkPortal: (_ :GenericModalRef) => Portal<any>, injectionData?: T) {
+    const overlayRef = this._createOverlay();
+    
+    const genericModalRef = new GenericModalRef<T>(overlayRef, injectionData);
+
+    const portal = generateCdkPortal(genericModalRef);
+
+    this._attachPortalInGenericModal(overlayRef, portal);
+
+    return genericModalRef;
   }
 
-  public openTemplate(templateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef): ModalRef {
-    const templatePortal = new TemplatePortal<any>(templateRef, viewContainerRef);
-    const overlayRef = this.createOverlay();
-    const modalRef = new ModalRef(overlayRef, undefined);
-    this.buildModalPortal(overlayRef, templatePortal);
-    return modalRef;
-  }
+  _getComponentPortal = <T = any>(component: any, genericModalRef: GenericModalRef<T>) =>
+    new ComponentPortal(component, null, ModalInjectionToken.createGenericModalInjector(genericModalRef));
 
-  private buildComponentPortal(component: any, modalRef: ModalRef): ComponentPortal<any> {
-    const compPortalInjector = ModalInjectionToken.buildPortalInjector(this.injector, modalRef);
-    const compPortal = new ComponentPortal(component, null, compPortalInjector);
-    return compPortal;
-  }
+  _attachPortalInGenericModal = (overlayRef: OverlayRef, portal: Portal<any>) => 
+    overlayRef.attach(new ComponentPortal(GenericModalComponent, null, ModalInjectionToken.createCustomPortalInjector(portal)));
 
-  private buildModalPortal(overlayRef: OverlayRef, portal: ComponentPortal<any> | TemplatePortal) {
-    const modalPortal = new ComponentPortal(GenericModalComponent);
-    const modalComponentRef = overlayRef.attach(modalPortal);
-    modalComponentRef.instance.portal = portal;
-  }
-
-  private createOverlay() {
-    return this.overlay.create({
-      hasBackdrop: true,
-      backdropClass: 'overlay__backdrop',
-      panelClass: 'modal',
-      disposeOnNavigation: true
-    });
-  }
+  _createOverlay = () => this.overlay.create({
+    hasBackdrop: true,
+    backdropClass:
+    'overlay__backdrop',
+    panelClass: 'modal',
+    scrollStrategy: this.overlay.scrollStrategies.noop()
+  })
 }

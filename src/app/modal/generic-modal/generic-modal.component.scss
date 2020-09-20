@@ -1,7 +1,4 @@
-$backdrop-opacity: .5;
 $z-index: 10;
-$dialog-margin-top: 10vh;
-$dialog-max-width: 500px;
 
 %overlay {
   position: fixed;
@@ -9,49 +6,30 @@ $dialog-max-width: 500px;
   top: 0;
   right: 0;
   bottom: 0;
+  z-index: $z-index;
 }
 
 .modal {
   @extend %overlay;
-  z-index: $z-index + 1;
-
-  //removing pointer-events enable scroll but we lose backdrop click to dismiss.
-  //pointer-events: none !important;
-
+  pointer-events: none !important;
   display: flex;
   justify-content: center;
-  overflow: auto;
-  
-  &__dialog {  
-    position: relative;
-    width: auto;
-    margin: $dialog-margin-top .5rem;
-    pointer-events: none;
-  }
+  align-items: center;
 
-  &__content {
-    position: relative;
-    width: auto;
-    background-color: #FFF;
-    border: 1px solid #D3D3D3;
-    border-radius: 3px;
-    outline: 0;
+  &__dialog {  
     pointer-events: auto;
-  }
-  
+    max-height: 100vh;
+    max-width: 80vw;
+    overflow: auto;
+    box-sizing: border-box;
+    background: #FFF;
+  }  
 }
 
 .overlay__backdrop {
   @extend %overlay;
-  z-index: $z-index;
   background-color: #000;
-  opacity: $backdrop-opacity;
-}
-
-@media (min-width: 576px) {
-  .modal__dialog {
-    max-width: $dialog-max-width;
-  }
+  opacity: .5;
 }
 
 body.modalOpen {

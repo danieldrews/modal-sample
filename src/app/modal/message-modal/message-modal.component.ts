@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MODAL_DATA } from '../injection-token/modal-injection-token';
-import { ModalRef } from '../modal-ref';
+import { GenericModalRef } from '../generic-modal-ref';
 
 @Component({
   selector: 'app-message-modal',
@@ -12,17 +12,17 @@ export class MessageModalComponent implements OnInit {
   modal: any;
 
   constructor(
-    @Inject(MODAL_DATA) private modalRef: ModalRef) { }
+    @Inject(MODAL_DATA) private genericModalRef: GenericModalRef) { }
 
   ngOnInit(): void {
-    this.modal = this.modalRef.data;
+    this.modal = this.genericModalRef.data;
   }
 
   close() {
-    this.modalRef.close();
+    this.genericModalRef.close();
   }
 
   btnClick(id: string) {
-    this.modalRef.close(id);
+    this.genericModalRef.close(id);
   }
 }

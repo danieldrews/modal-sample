@@ -5,6 +5,9 @@
   <span>MessageModalComponent data:</span>
   <pre style="white-space: pre-wrap;">{{ componentModalData | json }}</pre>
   <button (click)="openComponentModal(componentModalData)">Open component modal</button>
+  <br>
+  <br>
+  Events:
   <ul>
     <li *ngFor="let action of componentModalActions">{{action}}</li>
   </ul>
@@ -13,10 +16,11 @@
 <section>
   <h2>Template</h2>
   <code>
-    &lt;ng-template #sampleTemplate&gt;<br />
-    Look this awesome template... kind of nice isn't it?<br />
-    Do your magic and add some styles :p<br />
-    &lt;/ng-template&gt;
+    &lt;ng-template #sampleTemplate&gt;<br>
+    Look this awesome template... kind of nice isn't it?&lt;br&gt;<br>
+    Do your magic and add some styles :p&lt;br&gt;<br>
+    This is a interpolation '&#123; &#123; title &#125; &#125;'<br>
+  &lt;/ng-template&gt;
   </code>
   <br>
   <br>
@@ -24,7 +28,8 @@
 
   <ng-template #sampleTemplate>
     Look this awesome template... kind of nice isn't it?<br>
-    Do your magic and add some styles :p
+    Do your magic and add some styles :p<br>
+    This is a interpolation '{{ componentModalData.title }}'
   </ng-template>
 </section>
 
@@ -64,12 +69,6 @@
 </section>
 
 <section>
-  <h2>Scrollable **not working**</h2>
-  <button (click)="openTemplate(scrollableTemplate)">Open big modal</button>
-
-  <ng-template #scrollableTemplate>
-    <div style="height: 1000px;">
-      Should disable parent scroll and enable internal scroll
-    </div>
-  </ng-template>
+  <h2>Component large content</h2>
+  <button (click)="openLargeContent()">Open large content</button>
 </section>
