@@ -13,34 +13,33 @@ export class ModalService {
   constructor(private overlay: Overlay) { }
 
   openComponent = <T = any>(component: any, injectionData?: T): GenericModalRef<T> => 
-    this._open(_ => this._getComponentPortal(component, _), injectionData);
+    this.open(_ => this.getComponentPortal(component, _), injectionData);
 
   openTemplate = (templateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef): GenericModalRef => 
-    this._open(_ => new TemplatePortal<any>(templateRef, viewContainerRef));
+    this.open(_ => new TemplatePortal<any>(templateRef, viewContainerRef));
 
-  _open<T = any>(generateCdkPortal: (_ :GenericModalRef) => Portal<any>, injectionData?: T) {
-    const overlayRef = this._createOverlay();
+  private open<T = any>(generateCdkPortal: (_ :GenericModalRef) => Portal<any>, injectionData?: T) {
+    const overlayRef = this.createOverlay();
     
     const genericModalRef = new GenericModalRef<T>(overlayRef, injectionData);
 
     const portal = generateCdkPortal(genericModalRef);
 
-    this._attachPortalInGenericModal(overlayRef, portal);
+    this.attachPortalInGenericModal(overlayRef, portal);
 
     return genericModalRef;
   }
 
-  _getComponentPortal = <T = any>(component: any, genericModalRef: GenericModalRef<T>) =>
+  private getComponentPortal = <T = any>(component: any, genericModalRef: GenericModalRef<T>) =>
     new ComponentPortal(component, null, ModalInjectionToken.createGenericModalInjector(genericModalRef));
 
-  _attachPortalInGenericModal = (overlayRef: OverlayRef, portal: Portal<any>) => 
+  private attachPortalInGenericModal = (overlayRef: OverlayRef, portal: Portal<any>) => 
     overlayRef.attach(new ComponentPortal(GenericModalComponent, null, ModalInjectionToken.createCustomPortalInjector(portal)));
 
-  _createOverlay = () => this.overlay.create({
+  private createOverlay = () => this.overlay.create({
     hasBackdrop: true,
-    backdropClass:
-    'overlay__backdrop',
-    panelClass: 'modal',
-    scrollStrategy: this.overlay.scrollStrategies.noop()
+    scrollStrategy: this.overlay.scrollStrategies.noop(),
+    positionStrategy: this.overlay.position()
+    .global().centerHorizontally().centerVertically()
   })
 }

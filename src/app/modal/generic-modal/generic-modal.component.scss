@@ -1,21 +1,4 @@
-$z-index: 10;
-
-%overlay {
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: $z-index;
-}
-
 .modal {
-  @extend %overlay;
-  pointer-events: none !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   &__dialog {  
     pointer-events: auto;
     max-height: 100vh;
@@ -24,12 +7,6 @@ $z-index: 10;
     box-sizing: border-box;
     background: #FFF;
   }  
-}
-
-.overlay__backdrop {
-  @extend %overlay;
-  background-color: #000;
-  opacity: .5;
 }
 
 body.modalOpen {
